@@ -7,8 +7,8 @@ import keras
 import tensorflow as tf
 import numpy as np
 
-LEARNING_RATE = 3.2 * (10 ** (-5))
-EPOCHS = 10_000
+LEARNING_RATE = 3.2 * (10 ** (-2))
+EPOCHS = 1_000
 
 class LinearRegressionModel:
     """
@@ -25,14 +25,14 @@ class LinearRegressionModel:
         # Establecer una semilla para la generación de números aleatorios
         # para que el modelo se comporte de manera homógenea entre ejecuciones
         # del script 
-        np.random.seed(230490)
+        np.random.seed(2)
 
         # Como tratamos con regresión lineal, tanto la entrada como la salida
         # son números reales inviduales.
         self.model.add(Dense(1, activation="linear", input_dim=1))
 
         # Usamos el descenso estocástico del gradiente como función de optimización...
-        sgd = SGD(learning_rate=LEARNING_RATE, momentum=0.0001)
+        sgd = SGD(learning_rate=LEARNING_RATE)
         # ...y el error cuadrático medio como functión de coste
         self.model.compile(optimizer=sgd, loss=mean_squared_error)
 
