@@ -37,6 +37,10 @@ class LinearRegressionModel:
 
     model: keras.Sequential
 
+    # Valores mínimos y máximos usados para entrenamientos
+    min_y: float
+    max_y: float
+
     def __init__(self):
         self.model = Sequential()
 
