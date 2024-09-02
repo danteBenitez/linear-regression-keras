@@ -3,12 +3,13 @@ from keras.api.models import Sequential
 from keras.api.layers import Dense, InputLayer
 from keras.api.losses import mean_squared_error
 from keras.api.optimizers import SGD
+from keras.api.utils import normalize as keras_normalize
 import keras
 import tensorflow as tf
 import numpy as np
 
-LEARNING_RATE = 3.2 * (10 ** (-1))
-EPOCHS = 1_000
+LEARNING_RATE = 0.0004
+EPOCHS = 5_000
 
 def normalize(x: tf.Tensor) -> tf.Tensor:
     """
