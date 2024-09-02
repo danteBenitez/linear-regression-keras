@@ -7,8 +7,26 @@ import keras
 import tensorflow as tf
 import numpy as np
 
-LEARNING_RATE = 3.2 * (10 ** (-2))
+LEARNING_RATE = 3.2 * (10 ** (-1))
 EPOCHS = 1_000
+
+def normalize(x: tf.Tensor) -> tf.Tensor:
+    """
+        Normaliza un tensor usando escalado min-max
+
+        :returns Una tupla con (max, min, normalized)
+        :rtype (float, float, tf.Tensor)
+    """
+    min_x = np.min(x)
+    max_x = np.max(x)
+    normalized = (x - min_x) / (max_x - min_x)
+    return (max_x, min_x, normalized)
+
+def denormalize(x: tf.Tensor, min_value: float, max_value: float) -> tf.Tensor:
+    """
+        Denormaliza un tensor que fue reescalado con el método min-max
+    """
+    return min_value + x * (max_value - min_value)
 
 class LinearRegressionModel:
     """
@@ -58,7 +76,13 @@ class LinearRegressionModel:
         # de la forma del input
         batch_size = x.shape[0]
 
-        story = self.model.fit(x, y, epochs=epochs, batch_size=batch_size, verbose=int(verbose))
+        max_x, min_x, normalized_x = normalize(x)
+        max_y, min_y, normalized_y = normalize(y)
+
+        self.max_y = max_y
+        self.min_y = min_y
+
+        story = self.model.fit(x=normalized_x, y=normalized_y, epochs=epochs, batch_size=batch_size, verbose=int(verbose))
         return story
 
     def get_slope_and_y_intercept(self) -> tuple[float, float]:
@@ -81,7 +105,8 @@ class LinearRegressionModel:
         """
         if len(x.shape) > 1:
             raise ValueError("Forma de tensor a predecir incorrecta")
-        
-        return self.model.predict(x)
+
+        _, _, normalized = normalize(x) 
+        return denormalize(self.model.predict(normalized), min_value=self.min_y, max_value=self.max_y)
 
 
