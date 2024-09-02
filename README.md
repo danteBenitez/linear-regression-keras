@@ -9,7 +9,7 @@ los resultados.
 
 ## Gráficos e interpretación
 
-[Gráfico resultante del entrenamiento y la predicción](./img/graficos.png)
+![Gráfico resultante del entrenamiento y la predicción](./img/graficos.png)
 
 El gráfico de la izquierda representa la pérdida (loss) del modelo durante el entrenamiento, según el número de épocas. Se puede observar que la pérdida disminuye a medida que se incrementa el número de épocas, pero que llega en un punto en que la disminución es mínima y la pérdida se estabiliza.
 
