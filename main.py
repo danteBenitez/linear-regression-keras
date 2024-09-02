@@ -33,13 +33,11 @@ def plot_train_history(loss_history: tf.Tensor):
     plt.ylabel("Pérdida (Error Cuadrático medio)")
     plt.plot(loss_history.history["loss"])
 
-def main():
-    model = LinearRegressionModel()
-
-    data = pd.read_csv(DATA_PATH)
-    x = data["Altura"]
-    y = data["Peso"]
-
+def plot_loss_and_predictions(x: tf.Tensor, y: tf.Tensor, model: LinearRegressionModel):
+    """
+        Grafica información sobre el entrenamiento de `model` con los 
+        tensores `x` e `y`, así como de las predicciones del mismo.
+    """
     plt.subplot(1, 2, 1)
     plt.title("Épocas vs Pérdida")
 
@@ -58,7 +56,26 @@ def main():
     # Graficamos los valores predichos por el modelo
     plot_predicted(model, min_x=np.min(x), max_x=np.max(x), n=100)
 
+    # Imprimimos en pantalla los parámetros del modelo
+    w, b = model.get_weights()
+    print(f"Parámetros: w = {w}, b = {b}")
+
     plt.show()
+
+
+def main():
+    model = LinearRegressionModel()
+
+    data = pd.read_csv(DATA_PATH)
+    x = data["Altura"]
+    y = data["Peso"]
+
+    plot_loss_and_predictions(x, y, model)
+
+    # Predicción específica
+    predicted = model.predict(170)
+    print(f"Para una altura de 1,70m (170cm), el modelo predice un peso {predicted[0][0]:.2f}kg")
+
 
 if __name__ == "__main__":
     main()
